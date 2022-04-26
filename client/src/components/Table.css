@@ -1,0 +1,25 @@
+div.tableWrapper {
+    overflow-x: auto;
+    padding-inline:2em;
+}
+table.dataView {
+    margin:0 auto;
+    min-width: 400px;
+    border: 1px solid var(--bg-alt);
+    border-radius: var(--radius);
+    border-spacing:0;
+}
+.dataView thead th {
+    font-size: 1.2em;
+    background-color: var(--brand);
+}
+.dataView td:first-child{
+    padding-inline: 10px;
+}
+.dataView td:not(:first-child) {
+    padding: 14px 50px;
+}
+
+.recordCount {
+    text-align:initial;
+}

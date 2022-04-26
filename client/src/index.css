@@ -1,0 +1,154 @@
+:root {
+  --bg: #efefef;
+  --bg-alt: #3d3d3d;
+  --light-1: #e3e3e3;
+  --brand: #eb976f;
+
+  --radius:6px;
+}
+
+body {
+  font-family: sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing: border-box;;
+  height:100vh;
+}
+#root {
+  display:flex;
+  flex-direction: column;
+  background-color:var(--bg);
+  text-align: center;
+  min-height: calc(100vh - 40px);
+}
+
+#main {
+  position:relative;
+  flex:1 0 auto;
+  padding-inline:1.6em;
+  min-height: calc(100vh - 40px);
+}
+
+#main > h1 {
+  text-align:initial;
+}
+#navbar {
+  width:100%;
+  border-bottom: 1px solid #a5a5a5;
+}
+div#brand {
+  display: inline;
+  font-weight: bold;
+  float: left;
+  display: block;
+  position: absolute;
+  left: 0;
+  height: 100%;
+  font-size: 1.5em;
+  padding: 10px;
+  user-select: none;
+  color: var(--brand);
+}
+
+#navbar nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#navbar nav li {
+  list-style: none;
+}
+#navbar nav a {
+  padding: 1em 2em;
+  display: block;
+  height:100%;
+  text-decoration:none;
+  background-color: var(--bg);
+  border-radius:6px;
+}
+#navbar nav a:visited {
+  color:inherit;
+}
+
+#navbar nav a.active {
+  box-shadow: inset 0px -9px 5px -10px;
+}
+
+form#createNewSong {
+  width: clamp(200px, 100%, 600px);
+  margin: 0 auto;
+  border: 1px solid #c1c1c1;
+  padding: 2em;
+  background: #dddddd;
+  border-radius:var(--radius)
+}
+form h2 {
+  margin-block-start:unset;
+}
+
+.formGroup {
+  width: 100%;
+  text-align: initial;
+  margin-block-end:1em;
+}
+form label {
+  display: inline-block;
+  min-width: 5em;
+  text-align: right;
+  padding-inline-end: 1em;
+}
+
+form input, div.dropDown > div {
+    border-radius: var(--radius);
+  }
+  
+  div.dropDown div[class$="ValueContainer"] {
+    max-height: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+form input, div[class$="ValueContainer"] {
+    padding-inline-start:8px;
+}
+form input, div.dropDown div[class$="control"] {
+  border: 1px solid var(--light-1);
+  /* cursor: text; */
+}
+.formGroup > input:focus {/*, div.dropDown div[class$="control"]:focus {*/
+  outline: none;
+  box-shadow: 0 0 0px 1px var(--brand);
+}
+form input::placeholder, div.dropDown div[class$="placeholder"] {
+  color: hsl(0, 0%, 50%);
+  margin-left: 2px;
+  margin-right: 2px;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+form input, div.dropDown {
+  width:450px;
+  max-width: 100%;
+  box-sizing:border-box;
+  height: 60px;
+  /* line-height:140%; */
+}
+button.submit {
+  
+}
+
+div.dropDown {
+  display: inline-grid;
+}
+.dropDown.disabled * {
+  font-style:italic;
+  background: #afafaf;
+}
+footer {
+    padding-block: 1em;
+    background: #323232;
+    color: #e3e3e3;
+  flex-shrink:0;
+}
+
