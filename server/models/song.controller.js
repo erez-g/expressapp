@@ -5,6 +5,12 @@ const Song = db.songs;
 const Op = db.Sequelize.Op;
 const sequelize = db.sequelize;
 
+const createError = (status, msg) => {
+  let err = new Error(msg || 'bad request');
+  err.status = status || 500;
+  return err;
+}
+
 
 //create and save new song
 exports.create = (req, res) => {
@@ -30,11 +36,19 @@ exports.create = (req, res) => {
         });
 };
 
-//get all songs with condition
+exports.findAll = (query) => {
+
+  console.log('find all query params', query);
+
+  throw createError(400, 'some error');
+}
+
+// get all songs with condition
 exports.findAll = (req, res) => {
     const searchTerm = req.query.searchTerm;
-    const limit = +(req.query.limit) ?? false;
+    const limit = +(req.query.limit) || false;
     const offset = +(req.query.offset) || 0;
+    
     // const fields = ['id'];
     const queryOptions = {
       include: [
@@ -101,6 +115,10 @@ exports.findAll = (req, res) => {
             });
         });
 };
+
+
+
+
 // exports.findAll = (req, res) => {
 //     const name = req.query.name;
 //     const fields = req.query.fields.split(',');
