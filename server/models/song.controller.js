@@ -30,14 +30,6 @@ exports.create = (req, res) => {
         });
 };
 
-<<<<<<< Updated upstream
-//get all songs with condition
-exports.findAll = (req, res) => {
-    const searchTerm = req.query.searchTerm;
-    const limit = +(req.query.limit) ?? false;
-    const offset = +(req.query.offset) || 0;
-    // const fields = ['id'];
-=======
 // exports.findAll = (query) => {
 
 //   console.log('find all query params', query);
@@ -59,7 +51,6 @@ exports.findAll = async (query) => {
     const {searchTerm, limit, offset} = query;
     
     const fields = ['id'];
->>>>>>> Stashed changes
     const queryOptions = {
       include: [
         {
