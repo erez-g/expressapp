@@ -31,11 +31,11 @@ export const Table = ({...props}) => {
         })
         ).then(response => {
             return response.json()
-            .then(data => {
-                setRecords(data.rows);
-                setRecordsCount(data.count);
-                if (data.rows.length) {
-                    setTableHeaders(Object.keys(data.rows[0]));
+            .then(({result}) => {
+                setRecords(result.rows);
+                setRecordsCount(result.count);
+                if (result.rows.length) {
+                    setTableHeaders(Object.keys(result.rows[0]));
                 }
             });
         });

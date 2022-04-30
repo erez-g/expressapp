@@ -12,7 +12,7 @@ exports.create = (req, res) => {
         res.status(400).send({message: "song must have a title"});
         return;
     }
-    console.log(req.body);
+    // console.log(req.body);
     const song = {
         name: req.body.name,
         artist_id: req.body.artist_id,
@@ -30,12 +30,36 @@ exports.create = (req, res) => {
         });
 };
 
+<<<<<<< Updated upstream
 //get all songs with condition
 exports.findAll = (req, res) => {
     const searchTerm = req.query.searchTerm;
     const limit = +(req.query.limit) ?? false;
     const offset = +(req.query.offset) || 0;
     // const fields = ['id'];
+=======
+// exports.findAll = (query) => {
+
+//   console.log('find all query params', query);
+
+//   throw createError(400, 'some error');
+// }
+
+// get all songs with condition
+exports.findAll = async (query) => {
+  console.log('***********************')
+  console.log('***********************')
+  console.log(query)
+  console.log('***********************')
+  console.log('***********************')
+    // const searchTerm = query.searchTerm;
+    // const limit = +(query.limit) || false;
+    // const offset = +(query.offset) || 0;
+
+    const {searchTerm, limit, offset} = query;
+    
+    const fields = ['id'];
+>>>>>>> Stashed changes
     const queryOptions = {
       include: [
         {
@@ -52,10 +76,10 @@ exports.findAll = (req, res) => {
         [sequelize.literal("`album`.`name`"), 'album_name'],
         [sequelize.literal("`album`.`id`"), 'album_id'],
       ],
-      limit:limit,
-      offset:offset
+      limit: +limit,
+      offset: +offset
     };
-    switch (req.query.sortField) {
+    switch (query.sortField) {
       case 'artist':
         queryOptions.order = ['artist_name'];
         break;
@@ -80,26 +104,32 @@ exports.findAll = (req, res) => {
         {'artist_name': condition} //doesnt work
       ]} : null;
 
-      //alias
+      // alias
 
     // if (queryOptions.where) {
     //   console.log(Object.keys(queryOptions.where)[0]);
     //   queryOptions.where[Op.or].push(artistNameCondition);
     // }
-    // console.log(queryOptions.where);
-    queryOptions.order[1] = req.query.sortDir;
+    console.log(queryOptions.where);
+    queryOptions.order[1] = query.sortDir;
     queryOptions.order = sequelize.literal(queryOptions.order.join(" "));
 
-    Song.findAndCountAll(queryOptions)
-        .then(data => {
-          res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                err.message || 'no specific error message.'
-            });
-        });
+    try {
+      const result = await Song.findAndCountAll(queryOptions);
+      // console.log('result', result)
+      return result
+    } catch(e) {
+      throw createError(400, e.message);
+    }
+        // .then(data => {
+        //   res.send(data);
+        // })
+        // .catch(err => {
+        //     res.status(500).send({
+        //         message:
+        //         err.message || 'no specific error message.'
+        //     });
+        // });
 };
 // exports.findAll = (req, res) => {
 //     const name = req.query.name;
