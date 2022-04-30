@@ -3,11 +3,24 @@ div.tableWrapper {
     padding-inline:2em;
 }
 table.dataView {
-    margin:0 auto;
+    margin: 0 auto;
     min-width: 400px;
-    border: 1px solid var(--bg-alt);
+    margin-block: 1em 2em;
+    width: 1100px;
     border-radius: var(--radius);
-    border-spacing:0;
+    border-spacing: 0;
+    box-shadow: 1px 1px 4px 1px;
+}
+
+#tableControls {
+    display: inline-flex;
+    width: 100%;
+    max-width: 800px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding-block-start: 6px;
 }
 .dataView thead th {
     font-size: 1.2em;
@@ -22,4 +35,5 @@ table.dataView {
 
 .recordCount {
     text-align:initial;
+    max-width: 400px;
 }

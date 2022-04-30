@@ -3,7 +3,9 @@
   --bg-alt: #3d3d3d;
   --light-1: #e3e3e3;
   --brand: #eb976f;
-
+  --brand-alt: #D56FEB;
+  --green: #85EB6F;
+  --blue: #6FC3EB;
   --radius:6px;
 }
 
@@ -138,7 +140,43 @@ button.submit {
   
 }
 
+div.navButtons {
+  display:inline-flex;
+}
+.navBtn {
+  border-radius: 6px;
+    font-weight: bold;
+    font-family: cursive;
+    background-color: var(--brand);
+    border: none;
+    padding-inline: 10px;
+    font-size: 1.5em;
+    margin-inline:1px;
+}
+.navBtn[disabled] {
+  /* background-color: blue !important; */
+  filter: contrast(0.5);
+  color: grey;
+}
+.navBtn:not(:disabled):hover {
+  filter: saturate(1.2);
+}
+.navBtn:not(:disabled):active {
+  filter: contrast(0.8);
+}
+#tableControls input, #tableControls select {
+  height: 3em;
+  border-radius: var(--radius);
+  margin-inline: 3px;
+  padding-inline: 5px;
+  box-shadow: 0px 0px 4px -1px var(--brand);
+  background-color: var(--light-1);
+}
+#tableControls label {
+  margin-inline:10px;
+}
 div.dropDown {
+  
   display: inline-grid;
 }
 .dropDown.disabled * {

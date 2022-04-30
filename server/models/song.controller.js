@@ -1,7 +1,10 @@
 // const res = require("express/lib/response");
 const db = require("../models/init.js");
+const { song } = require("./tables.js");
 const Song = db.songs;
 const Op = db.Sequelize.Op;
+const sequelize = db.sequelize;
+
 
 //create and save new song
 exports.create = (req, res) => {
@@ -29,14 +32,65 @@ exports.create = (req, res) => {
 
 //get all songs with condition
 exports.findAll = (req, res) => {
-    const name = req.query.name;
-    const fields = req.query.fields.split(',');
+    const searchTerm = req.query.searchTerm;
+    const limit = +(req.query.limit) ?? false;
+    const offset = +(req.query.offset) || 0;
     // const fields = ['id'];
-    const condition = name ? {[Op.like]: `%{name}%` } : null;
-    Song.findAndCountAll({
-      attributes: fields,
-      where: condition
-    })
+    const queryOptions = {
+      include: [
+        {
+          model: db.albums,
+          attributes:[],
+          include: [{
+            model: db.artists
+          }]
+        }
+      ],
+      attributes: ['id','name',
+      [sequelize.literal("`album->artist`.`name`"), 'artist_name'],
+      [sequelize.literal("`album->artist`.`id`"), 'artist_id'],
+        [sequelize.literal("`album`.`name`"), 'album_name'],
+        [sequelize.literal("`album`.`id`"), 'album_id'],
+      ],
+      limit:limit,
+      offset:offset
+    };
+    switch (req.query.sortField) {
+      case 'artist':
+        queryOptions.order = ['artist_name'];
+        break;
+        case 'album':
+        queryOptions.order = ['album_name'];
+        break;
+      case 'song':
+        queryOptions.order = ['name'];
+        break;
+      default: //nothing
+      queryOptions.order = ['id'];
+    }
+    const condition = searchTerm ? {[Op.like]: `%${searchTerm}%` } : null;
+    
+    const artistName = sequelize.literal("`album->artist`.`name`");
+    const artistCondition = {};
+    artistCondition[artistName] = condition;
+
+    queryOptions.where = condition ? 
+      {[Op.or]:[
+        {'name': condition},
+        {'artist_name': condition} //doesnt work
+      ]} : null;
+
+      //alias
+
+    // if (queryOptions.where) {
+    //   console.log(Object.keys(queryOptions.where)[0]);
+    //   queryOptions.where[Op.or].push(artistNameCondition);
+    // }
+    // console.log(queryOptions.where);
+    queryOptions.order[1] = req.query.sortDir;
+    queryOptions.order = sequelize.literal(queryOptions.order.join(" "));
+
+    Song.findAndCountAll(queryOptions)
         .then(data => {
           res.send(data);
         })
@@ -47,6 +101,25 @@ exports.findAll = (req, res) => {
             });
         });
 };
+// exports.findAll = (req, res) => {
+//     const name = req.query.name;
+//     const fields = req.query.fields.split(',');
+//     // const fields = ['id'];
+//     const condition = name ? {[Op.like]: `%{name}%` } : null;
+//     Song.findAndCountAll({
+//       attributes: fields,
+//       where: condition
+//     })
+//         .then(data => {
+//           res.send(data);
+//         })
+//         .catch(err => {
+//             res.status(500).send({
+//                 message:
+//                 err.message || 'no specific error message.'
+//             });
+//         });
+// };
 
 //get song by id
 exports.findOne = (req, res) => {

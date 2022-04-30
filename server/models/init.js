@@ -1,5 +1,5 @@
 const dbConfig = require("../db/db.config.js");
-const {song,artist} = require("./tables.js");
+const {song,artist,album} = require("./tables.js");
 const {Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
@@ -18,13 +18,20 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   
   db.songs = song(sequelize, Sequelize);
   db.artists = artist(sequelize, Sequelize);
+  db.albums = album(sequelize, Sequelize);
   
 //associations
-db.artists.hasMany(
+db.albums.hasMany(
   db.songs, {
+    foreignKey: 'album_id'
+  }
+);
+db.artists.hasMany(
+  db.albums, {
     foreignKey: 'artist_id'
   }
 );
-db.songs.belongsTo(db.artists, {foreignKey:'artist_id'});
+db.songs.belongsTo(db.albums, {foreignKey:'album_id'});
+db.albums.belongsTo(db.artists, {foreignKey:'artist_id'});
 
 module.exports = db;
