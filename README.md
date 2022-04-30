@@ -1,4 +1,14 @@
 
+# Song CRUD Interface
+
+Learning to use Node, Express, Sequelize, and React hooks
+
+
+## Project management
+
+- [TODOs Kanban(Airtable)](https://airtable.com/shrJfd4PVABGeYG2d/tbl1ykzEoqysY8oHv)
+
+
 ## Run Locally
 
 Go to the project directory
