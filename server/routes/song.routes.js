@@ -8,7 +8,7 @@ module.exports = app => {
 
     // Create a new song
     router.post("/", songs.create);
-    
+
     // Retrieve all songs
     router.get("/", (req, res, next) => {
         let { query } = req;
@@ -20,16 +20,16 @@ module.exports = app => {
 
     // Retrieve all published songs
     router.get("/artist", songs.getAllByArtist);
-    
+
     // Retrieve a single song with id
     router.get("/:id", songs.findOne);
-    
+
     // Update a song with id
     router.put("/:id", songs.update);
-    
+
     // Delete a song with id
     router.delete("/:id", songs.delete);
-    
+
     // Delete all songs
     router.delete("/", songs.deleteAll);
 

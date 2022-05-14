@@ -5,6 +5,12 @@ const Song = db.songs;
 const Op = db.Sequelize.Op;
 const sequelize = db.sequelize;
 
+const createError = (status, msg) => {
+  let err = new Error(msg || 'bad request');
+  err.status = status || 500;
+  return err;
+}
+
 
 //create and save new song
 exports.create = (req, res) => {
@@ -122,6 +128,10 @@ exports.findAll = async (query) => {
         //     });
         // });
 };
+
+
+
+
 // exports.findAll = (req, res) => {
 //     const name = req.query.name;
 //     const fields = req.query.fields.split(',');
