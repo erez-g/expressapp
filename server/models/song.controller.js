@@ -70,23 +70,19 @@ exports.findAll = (req, res) => {
     }
     const condition = searchTerm ? {[Op.like]: `%${searchTerm}%` } : null;
     
-    const artistName = sequelize.literal("`album->artist`.`name`");
-    const artistCondition = {};
-    artistCondition[artistName] = condition;
-
     queryOptions.where = condition ? 
       {[Op.or]:[
-        {'name': condition},
-        {'artist_name': condition} //doesnt work
+        {'name': condition}
       ]} : null;
 
       //alias
+      const artistName = sequelize.literal("`album->artist`.`name`");
 
     // if (queryOptions.where) {
     //   console.log(Object.keys(queryOptions.where)[0]);
     //   queryOptions.where[Op.or].push(artistNameCondition);
     // }
-    // console.log(queryOptions.where);
+    console.log(queryOptions.where);
     queryOptions.order[1] = req.query.sortDir;
     queryOptions.order = sequelize.literal(queryOptions.order.join(" "));
 
