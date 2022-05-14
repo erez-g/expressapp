@@ -3,19 +3,19 @@ module.exports = app => {
     var router = require("express").Router();
 
     const sendResponse = (res, result) => {
-        return res.send({ success: true, result });
+        return res.json({ success: true, result });
     }
 
     // Create a new song
     router.post("/", songs.create);
 
     // Retrieve all songs
-    router.get("/", (req, res) => {
+    router.get("/", (req, res, next) => {
         let { query } = req;
 
-        songs.findAll(query).then((result) => {
-            return res.send((result) => sendResponse(res, result)).catch(next);
-        });
+        return songs.findAll(query).then((result) => {
+            return sendResponse(res, result)
+        }).catch(next);
     });
 
     // Retrieve all published songs
