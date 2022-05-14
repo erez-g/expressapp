@@ -31,11 +31,11 @@ export const Table = ({...props}) => {
         })
         ).then(response => {
             return response.json()
-            .then(data => {
-                setRecords(data.rows);
-                setRecordsCount(data.count);
-                if (data.rows.length) {
-                    setTableHeaders(Object.keys(data.rows[0]));
+            .then(({result}) => {
+                setRecords(result.rows);
+                setRecordsCount(result.count);
+                if (result.rows.length) {
+                    setTableHeaders(Object.keys(result.rows[0]));
                 }
             });
         });
@@ -104,7 +104,7 @@ export const Table = ({...props}) => {
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
-                    <option value="0">All</option>
+                    <option value={recordsCount}>All</option>
                 </select>
                 <label htmlFor="limit"> records</label>
             </div>

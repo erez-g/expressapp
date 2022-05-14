@@ -2,6 +2,8 @@
 const cors = require('cors');
 const express = require("express");
 const app = express();
+const errorMiddleware = require('./routes/errorMiddleware');
+
 app.use(express.json());
 
 const db = require('./models/init.js');
@@ -19,6 +21,8 @@ const PORT = process.env.PORT || 3001;
 app.get("/", (req, res) => {
   res.json({message: "Hello from server!"});
 })
+
+app.use(errorMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}.`);
