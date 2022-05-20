@@ -8,13 +8,12 @@ const sequelize = db.sequelize;
 //create and save new artist
 exports.create = (req, res) => {
     if (!req.body.name) {
-        res.status(400).send({message: "artist must have a title"});
+        res.status(400).send({message: "artist must have a name"});
         return;
     }
     // //mutate request to search existing value first
     //this creates a gateway timeout and crashes the client
-    // req.query = {name: req.body.name}
-    // let existingRecord = this.findAll(req, res)
+    // let existingRecord = Artist.findAll(req, res)
     // if (existingRecord) {
     //   console.log('found');
     //   res.status(201).send({message: 'record exists'});
@@ -23,6 +22,9 @@ exports.create = (req, res) => {
     const artist = {
         name: req.body.name
     };
+    if (req.body.id)//used by migration
+      artist.id = req.body.id;
+    
     Artist.create(artist)
         .then(data => {
             res.send(data);

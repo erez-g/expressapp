@@ -3,20 +3,27 @@ const cors = require('cors');
 const express = require("express");
 const app = express();
 const errorMiddleware = require('./routes/errorMiddleware');
+const dataMigration = require('./db/migrations/dev.js');
 
 app.use(express.json());
 
 const db = require('./models/init.js');
-db.sequelize.sync();
-
+const devData = ['1_artists.csv','2_albums.csv','3_songs.csv'];
+db.sequelize.sync({force: true}).then(()=>{
+  try {
+      for (const file of devData) {
+        dataMigration.getData('server/db/seeders/' + file);
+      };
+  } catch (e) {
+      console.log('error migrating data', e);
+  }
+});
 app.use(cors());
 require("./routes/song.routes.js")(app);
 require("./routes/artist.routes.js")(app);
-const PORT = process.env.PORT || 3001;
+require("./routes/album.routes.js")(app);
 
-// app.get("/api", (req, res) => {
-//   res.json({message: `HIYA from server! port ${PORT}.`});
-// })
+const PORT = process.env.PORT || 3001;
 
 app.get("/", (req, res) => {
   res.json({message: "Hello from server!"});
