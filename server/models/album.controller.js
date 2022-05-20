@@ -38,26 +38,10 @@ exports.create = (req, res) => {
         });
 };
 
-// exports.findAll = (query) => {
-
-//   console.log('find all query params', query);
-
-//   throw createError(400, 'some error');
-// }
-
 // get all albums with condition
 exports.findAll = async (query) => {
-  console.log('***********************')
-  console.log('***********************')
-  console.log(query)
-  console.log('***********************')
-  console.log('***********************')
-    // const searchTerm = query.searchTerm;
-    // const limit = +(query.limit) || false;
-    // const offset = +(query.offset) || 0;
 
-    const {searchTerm, limit, offset} = query;
-    
+    const {searchTerm, limit, offset} = query;    
     const fields = ['id'];
     const queryOptions = {
       include: [
@@ -96,54 +80,17 @@ exports.findAll = async (query) => {
       //alias
       const artistName = sequelize.literal("`album->artist`.`name`");
 
-    // if (queryOptions.where) {
-    //   console.log(Object.keys(queryOptions.where)[0]);
-    //   queryOptions.where[Op.or].push(artistNameCondition);
-    // }
     console.log(queryOptions.where);
     queryOptions.order[1] = req.query.sortDir;
     queryOptions.order = sequelize.literal(queryOptions.order.join(" "));
 
     try {
       const result = await Album.findAndCountAll(queryOptions);
-      // console.log('result', result)
       return result
     } catch(e) {
       throw createError(400, e.message);
     }
-        // .then(data => {
-        //   res.send(data);
-        // })
-        // .catch(err => {
-        //     res.status(500).send({
-        //         message:
-        //         err.message || 'no specific error message.'
-        //     });
-        // });
 };
-
-
-
-
-// exports.findAll = (req, res) => {
-//     const name = req.query.name;
-//     const fields = req.query.fields.split(',');
-//     // const fields = ['id'];
-//     const condition = name ? {[Op.like]: `%{name}%` } : null;
-//     Album.findAndCountAll({
-//       attributes: fields,
-//       where: condition
-//     })
-//         .then(data => {
-//           res.send(data);
-//         })
-//         .catch(err => {
-//             res.status(500).send({
-//                 message:
-//                 err.message || 'no specific error message.'
-//             });
-//         });
-// };
 
 //get album by id
 exports.findOne = (req, res) => {
