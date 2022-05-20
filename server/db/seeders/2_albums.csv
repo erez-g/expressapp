@@ -1,4 +1,4 @@
-"id","name","artist","price"
+"id","name","artist_id","price"
 "1","Revolver","1","9.99"
 "2","Sgt. Peppers' Lonely Hearts Club Band","1","9.99"
 "3","Yello Submarine","1","9.99"

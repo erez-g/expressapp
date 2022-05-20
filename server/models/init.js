@@ -10,28 +10,43 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
       min: dbConfig.pool.min,
       acquire: dbConfig.pool.acquire,
       idle: dbConfig.pool.idle
-    }
-  });
-  const db = {};
-  db.Sequelize = Sequelize;
-  db.sequelize = sequelize;  
-  
-  db.songs = song(sequelize, Sequelize);
-  db.artists = artist(sequelize, Sequelize);
-  db.albums = album(sequelize, Sequelize);
+      }
+    });
+    const db = {};
+    db.Sequelize = Sequelize;
+    db.sequelize = sequelize;  
+
+    db.artists = artist(sequelize, Sequelize);
+    db.albums = album(sequelize, Sequelize);
+    db.songs = song(sequelize, Sequelize);
   
 //associations
 db.albums.hasMany(
-  db.songs, {
-    foreignKey: 'album_id'
+    db.songs, {
+    targetKey: 'id',
+    foreignKey: 'album_id',
+    onDelete: 'SET NULL',
+    onUpdate: 'NO ACTION'
   }
 );
 db.artists.hasMany(
-  db.albums, {
-    foreignKey: 'artist_id'
+    db.albums, {
+      onDelete: 'SET NULL',
+      onUpdate: 'NO ACTION',
+    foreignKey: 'artist_id',
   }
 );
-db.songs.belongsTo(db.albums, {foreignKey:'album_id'});
-db.albums.belongsTo(db.artists, {foreignKey:'artist_id'});
+db.songs.belongsTo(
+    db.albums, {
+    targetKey:'id',
+    foreignKey:'album_id'
+  }
+);
+db.albums.belongsTo(
+    db.artists, {
+      targetKey:'id',
+    foreignKey:'artist_id'
+  }
+);
 
 module.exports = db;

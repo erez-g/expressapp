@@ -16,7 +16,7 @@ module.exports ={
             // },
             album_id: {
                 type:DataTypes.INTEGER,
-                allowNull:false
+                allowNull:true
             },
             createdAt: {
                 type: DataTypes.DATE,
@@ -28,7 +28,7 @@ module.exports ={
             }
         
         
-        });
+        },{underscored: true});
         return Song;
         // (async () => {
             // await Song.sync();
@@ -54,7 +54,8 @@ module.exports ={
                 allowNull: false
             },
             genre: {
-                type: DataTypes.STRING
+                type: DataTypes.STRING,
+                allowNull: true
             },
             createdAt: {
                 type: DataTypes.DATE,
@@ -80,7 +81,8 @@ module.exports ={
                 allowNull: false
             },
             artist_id: {
-                type: DataTypes.INTEGER
+                type: DataTypes.INTEGER,
+                allowNull:true
             },
             createdAt: {
                 type: DataTypes.DATE,
@@ -91,7 +93,7 @@ module.exports ={
                 defaultValue: sequelize.literal('NOW()')
             }
         
-        });
+        },{underscored: true});
         return Album;
     // (async () => {
         // await Artist.sync();
