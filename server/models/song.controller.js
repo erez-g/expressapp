@@ -55,7 +55,7 @@ exports.findAll = async (query) => {
     // const limit = +(query.limit) || false;
     // const offset = +(query.offset) || 0;
 
-    const {searchTerm, limit, offset} = query;
+    const {searchTerm, limit, offset, sortField, sortDir} = query;
     
     const fields = ['id'];
     const queryOptions = {
@@ -77,7 +77,7 @@ exports.findAll = async (query) => {
       limit: +limit,
       offset: +offset
     };
-    switch (query.sortField) {
+    switch (sortField) {
       case 'artist':
         queryOptions.order = ['artist_name'];
         break;
@@ -105,7 +105,7 @@ exports.findAll = async (query) => {
     //   queryOptions.where[Op.or].push(artistNameCondition);
     // }
     console.log(queryOptions.where);
-    queryOptions.order[1] = req.query.sortDir;
+    queryOptions.order[1] = sortDir;
     queryOptions.order = sequelize.literal(queryOptions.order.join(" "));
 
     try {

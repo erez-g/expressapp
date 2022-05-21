@@ -21,12 +21,6 @@ const App = ()=> {
       .then(data => console.log(data));
   }
   
-  // useEffect(()=>{
-  //   fetch('/api')
-  //     .then((res) => res.json())
-  //     .then((data) => setData(data.message));
-  // });
-
   return (
     <>
       <h1>Main View</h1>

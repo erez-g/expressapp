@@ -40,27 +40,21 @@ exports.create = (req, res) => {
 
 // get all albums with condition
 exports.findAll = async (query) => {
-
-    const {searchTerm, limit, offset} = query;    
-    const fields = ['id'];
+    const {searchTerm, limit, offset, sortDir, sortField} = query;    
+  
     const queryOptions = {
-      include: [
-        {
-          model: db.albums,
-          attributes:[],
-          include: [{
-            model: db.artists
-          }]
-        }
-      ],
+        include: [{
+          model: db.artists,
+          attributes:[]
+          }],
       attributes: ['id','name',
-      [sequelize.literal("`album->artist`.`name`"), 'artist_name'],
-      [sequelize.literal("`album->artist`.`id`"), 'artist_id']
+                  [sequelize.literal("`artist`.`name`"), 'artist_name'],
+                  [sequelize.literal("`artist`.`id`"), 'artist_id']
       ],
       limit: +limit,
       offset: +offset
     };
-    switch (query.sortField) {
+    switch (sortField) {
       case 'artist':
         queryOptions.order = ['artist_name'];
         break;
@@ -78,15 +72,14 @@ exports.findAll = async (query) => {
       ]} : null;
 
       //alias
-      const artistName = sequelize.literal("`album->artist`.`name`");
+      const artistName = sequelize.literal("`artist`.`name`");
 
-    console.log(queryOptions.where);
-    queryOptions.order[1] = req.query.sortDir;
+    queryOptions.order[1] = sortDir;
     queryOptions.order = sequelize.literal(queryOptions.order.join(" "));
 
     try {
       const result = await Album.findAndCountAll(queryOptions);
-      return result
+      return result;
     } catch(e) {
       throw createError(400, e.message);
     }

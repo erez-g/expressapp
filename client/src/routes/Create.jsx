@@ -1,9 +1,10 @@
+//not in use, interactions moved to Form component
+
+
 import React, { useRef, useState } from 'react';
 import Dropdown from '../components/Dropdown';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-
-
 
 const initialState = {
     name: '',
@@ -20,7 +21,7 @@ const Create = () => {
     ] = useState(initialState);
     
     const clearState = () => {
-      setState({ ...initialState });
+      setState({ ...initialState});
     };
     // const [name, setName] = useState('');
     // const [artist, setArtist] = useState({id:0,name:''});
