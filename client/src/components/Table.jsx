@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import './Table.css'
+import './Table.css';
 import NavButtons from './NavButtons';
+import Dialog from './Dialog';
 export const Table = ({...props}) => {
-
+    const [dbObject,setDbObject] = useState('songs');
     const [records,setRecords] = useState([]);
     const [recordsCount,setRecordsCount] = useState(0);
     const [tableHeaders,setTableHeaders] = useState([]);
@@ -11,8 +12,13 @@ export const Table = ({...props}) => {
     const [searchTerm,setSearchTerm] = useState('');
     const [sortField,setSortField] = useState('');
     const [sortDir,setSortDir] = useState('ASC');
+    const [recordId,setRecordId] = useState('');
+    const [actionType,setActionType] = useState('');
+    const [dialogToggle, setDialogToggle] = useState(false);
+    const [recordToHandle,setRecordToHandle] = useState({});
 
-    const useEffectDependencies = [limit,
+    const useEffectDependencies = [dbObject,
+                                    limit,
                                     offset,
                                     sortField,
                                     sortDir,
@@ -20,10 +26,11 @@ export const Table = ({...props}) => {
                                         searchTerm.length>=3
                                     )
                                 ];
-    useEffect(() => {
-        fetch('/api/songs?' +  new URLSearchParams({
-            limit:limit,
-            offset: offset,
+
+    useEffect(()=>{
+        fetch('/api/' + dbObject + '?' +  new URLSearchParams({
+            limit:+limit,
+            offset: +offset,
             sortField: sortField,
             sortDir: sortDir.toUpperCase(),
             searchTerm: searchTerm
@@ -40,6 +47,7 @@ export const Table = ({...props}) => {
             });
         });
     }, useEffectDependencies)
+
 
     const getColumnName =(input)=> {
         switch(input) {
@@ -65,7 +73,30 @@ export const Table = ({...props}) => {
         });
     }
 
+    const handleObjectChoice = e => {
+        setOffset(0);
+        setDbObject(e.target.id.toLowerCase());
+    }
+
+    
+    const handleRowAction = e => {
+        const recordId = e.target.closest('tr').id;
+        setRecordId(recordId);
+        setActionType(e.target.dataset.action);
+        setRecordToHandle(records.find(obj => obj.id.toString() === recordId))
+        setDialogToggle(!dialogToggle);
+    }
+
+    const prepareNewRecord = e => {
+        setActionType('add');
+        setDialogToggle(!dialogToggle);
+    }
+
     if (!records) return;
+    const limitOptions = [10,25,50].filter((item)=>{
+        return item <= recordsCount;
+    });
+
 
     return (
       <>
@@ -75,13 +106,20 @@ export const Table = ({...props}) => {
             value={searchTerm} placeholder="search..." 
             onChange={e=>{setSearchTerm(e.target.value)}}/>
            <div id="sortContainer">
-               <label htmlFor="sortType">Sort By</label>
+               <label htmlFor="sortType">Sort </label>
+               {dbObject !== 'artists' &&
+               <>
+               <label htmlFor="sortType">By</label>
                 <select value={sortField} onChange={e=>{setSortField(e.target.value)}} name="sortType">
                     <option value="" disabled>Select one...</option>
                     <option value="artist">Artist</option>
                     <option value="album">Album</option>
-                    <option value="song">Song Name</option>
+                    {dbObject === 'songs' && 
+                        <option value="song">Song Name</option>
+                    }
                 </select>
+                </>
+                }
                 <select name="sortDir" value={sortDir} onChange={e=>{
                     setOffset(0);
                     setSortDir(e.target.value)}
@@ -101,9 +139,10 @@ export const Table = ({...props}) => {
                     } 
                     
                 }}>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
+                    {limitOptions.map((item,index)=>{
+                        return <option key={index} value={item}>{item}</option>
+                    })
+                    }
                     <option value={recordsCount}>All</option>
                 </select>
                 <label htmlFor="limit"> records</label>
@@ -120,6 +159,26 @@ export const Table = ({...props}) => {
             +recordsCount : +(offset+limit)} 
         {' of'} {recordsCount} records
     </p>
+    <div id="tableTopButtons">
+        <div id="objectChoiceContainer">
+            {['Songs','Albums','Artists'].map((item,index)=>{
+                const activeState = (item.toLowerCase() === dbObject) ? 'active' : '';
+                    return <button key={index} id={item} 
+                                onClick={handleObjectChoice}
+                                className={"objectChoice " + activeState}>
+                                {item}
+                            </button>
+                })
+            }
+        </div>
+            <div className="actions" id="addRecordContainer">
+                <button data-action="add" 
+                    title="add"
+                    onClick={prepareNewRecord}>
+                    + Add new record
+                </button>
+            </div>
+    </div>
     <table className="dataView">
     <thead>
         <tr>
@@ -130,6 +189,7 @@ export const Table = ({...props}) => {
                     </th>
             }
         })}
+        <th id="actions-col"></th>
         
     
     </tr>
@@ -137,6 +197,7 @@ export const Table = ({...props}) => {
     <tbody>
     {records.map((item,i)=>{
     return <tr key={item.id}
+            id={item.id}
             data-artist={item.artist_id}
             data-album={item.album_id}
             >
@@ -148,11 +209,30 @@ export const Table = ({...props}) => {
                 </td>
             }
         })}
-        
+        <td className="actions">
+            <button data-action="edit" 
+                    title="edit"
+                    onClick={handleRowAction}>
+                📝
+            </button>
+            <button data-action="delete" 
+                    title="delete"
+                    onClick={handleRowAction}>
+                ❌
+            </button>
+        </td>
         </tr>
     })}
+    
     </tbody>
     </table>
+    <Dialog id='userActionsModal'
+            recordId={recordId} 
+            actionType={actionType}
+            reRender={dialogToggle}
+            recordData={recordToHandle}
+            dbObj={dbObject}
+    />
     </div>   
     </>
   )

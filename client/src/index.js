@@ -32,7 +32,7 @@ ReactDOMClient.createRoot(container).render(
     <div id="main">
     <Routes>
           <Route path="/" element={<App />} />
-          <Route path="create" element={<Create />} />
+          {/* <Route path="create" element={<Create />} /> */}
           <Route path="about" element={<About />} />
           <Route
             path="*"

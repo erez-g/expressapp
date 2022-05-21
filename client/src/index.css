@@ -34,6 +34,11 @@ body {
 #main > h1 {
   text-align:initial;
 }
+dialog::backdrop {
+  cursor:pointer;
+    background: black;
+    opacity: 0.4;
+}
 #navbar {
   width:100%;
   border-bottom: 1px solid #a5a5a5;
@@ -143,21 +148,23 @@ button.submit {
 div.navButtons {
   display:inline-flex;
 }
-.navBtn {
+#main  button {
   border-radius: 6px;
-    font-weight: bold;
-    font-family: cursive;
-    background-color: var(--brand);
+  font-weight: bold;
+  background-color: var(--brand);
     border: none;
     padding-inline: 10px;
-    font-size: 1.5em;
+    font-size: 1.8em;
     margin-inline:1px;
-}
-.navBtn[disabled] {
-  /* background-color: blue !important; */
-  filter: contrast(0.5);
-  color: grey;
-}
+  }
+  #main button[disabled] {
+    /* background-color: blue !important; */
+    filter: contrast(0.5);
+    color: grey;
+  }
+  .navBtn {
+    font-family: cursive;
+  }
 .navBtn:not(:disabled):hover {
   filter: saturate(1.2);
 }
@@ -189,4 +196,23 @@ footer {
     color: #e3e3e3;
   flex-shrink:0;
 }
+label[for="sortType"] {
+  /* margin: unset !important; */
+  margin: 0 .7ch 0  !important;
+}
+label[for="sortType"]:last-of-type {
+  margin-inline-start: 0.3ch !important;
+}
+label[for="sortType"]:first-of-type {
+  margin-inline-end: 1px !important;
+}
 
+td.actions {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: flex-end;
+}

@@ -11,7 +11,17 @@ table.dataView {
     border-spacing: 0;
     box-shadow: 1px 1px 4px 1px;
 }
+div#tableTopButtons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+}
+button[data-action="add"] {
 
+}
 #tableControls {
     display: inline-flex;
     width: 100%;
@@ -29,11 +39,37 @@ table.dataView {
 .dataView td:first-child{
     padding-inline: 10px;
 }
-.dataView td:not(:first-child) {
-    padding: 14px 50px;
+.dataView td:not(:first-child):not(.actions) {
+    padding-block: 14px;
 }
 
 .recordCount {
+    margin-block-start: 1em;
     text-align:initial;
     max-width: 400px;
+}
+
+#objectChoiceContainer {
+    text-align:initial;
+}
+
+#objectChoiceContainer button {
+    background-color: var(--bs-gray-400);
+    font-size:1.5em;
+}
+    
+#objectChoiceContainer button.active {
+    background:var(--brand);
+}
+
+#main .actions button {
+    background-color:initial;
+    display:inline-block;
+}
+#main #addRecordContainer button[data-action="add"] {
+    background-color: var(--brand);
+    font-size: 1.4em;
+}
+.dataView tbody tr:nth-child(even) {
+    backdrop-filter: brightness(0.94);
 }

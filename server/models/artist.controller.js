@@ -38,33 +38,38 @@ exports.create = (req, res) => {
 };
 
 //get all artists with condition
-exports.findAll = (req, res) => {
-    const term = req.query.name.toLowerCase();
-    // const fields = req.query.fields.split(',');
-    // const fields = ['id'];
-    const condition = { 
-      name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', '%' + term + '%')       
-    }// name: {[Op.like]: `%`+name+`%` }};
-    if (!term) {
-        res.status(400).send({message: "search by name"});
-        return;
-    }
+exports.findAll = async (query) => {
+  const {searchTerm, limit, offset, sortDir, sortField} = query;    
+  
+  const queryOptions = {
+    attributes: ['id','name'],
+    limit: +limit,
+    offset: +offset
+  };
+  switch (sortField) {
+      case 'artist':
+      queryOptions.order = ['name'];
+      break;
+      //todo genre case
+    default: //nothing
+    queryOptions.order = ['id'];
+  }
+  const condition = searchTerm ? {[Op.like]: `%${searchTerm}%` } : null;
+  
+  queryOptions.where = condition ? 
+    {[Op.or]:[
+      {'name': condition}
+    ]} : null;
 
-    
-    Artist.findAll({
-      where: condition
-    })
-        .then(data => {
-          console.log(data);
-          res.send(data);
-        })
-        .catch(err => {
-          console.log(err);
-            res.status(500).send({
-                message:
-                err.message || 'no specific error message.'
-            });
-        });
+  queryOptions.order[1] = sortDir;
+  queryOptions.order = sequelize.literal(queryOptions.order.join(" "));
+
+  try {
+    const result = await Artist.findAndCountAll(queryOptions);
+    return result;
+  } catch(e) {
+    throw createError(400, e.message);
+  }
 };
 
 //get artist by id

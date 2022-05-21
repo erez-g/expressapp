@@ -16,13 +16,13 @@ export const Navbar = () => {
               (isActive ? 'active' : '')
             }>
               Home</NavLink></li>
-        <li>
+        {/*<li>
           <NavLink 
             to="create"
             className={({isActive})=>
               (isActive ? 'active' : '')
             }>
-            Create</NavLink></li>
+            Create</NavLink></li> */}
         <li>
           <NavLink 
             to="about"
