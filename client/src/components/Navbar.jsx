@@ -27,9 +27,16 @@ export const Navbar = () => {
           <NavLink 
             to="about"
             className={({isActive})=>
-              (isActive ? 'active' : '')
-            }>
+            (isActive ? 'active' : '')
+          }>
             About</NavLink></li>
+            <li>
+              <NavLink 
+                to="admin"
+                className={({isActive})=>
+                  (isActive ? 'active' : '')
+                }>
+                Admin</NavLink></li>
         </nav>     
     </div>   
     </>

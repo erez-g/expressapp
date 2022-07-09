@@ -95,16 +95,24 @@ module.exports ={
         
         },{underscored: true});
         return Album;
-    // (async () => {
-        // await Artist.sync();
-        //code
+    },
+    featured: (sequelize, DataTypes) => {
+        const Featured = sequelize.define("featured", {
+            id: {
+                type:DataTypes.INTEGER,
+                autoIncrement: true,
+                primaryKey: true
+            },
+            createdAt: {
+                type: DataTypes.DATE,
+                defaultValue: sequelize.literal('NOW()')
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
+                defaultValue: sequelize.literal('NOW()')
+            }
         
-        // const newArtist = Artist.build({name: 'Iron Maiden'});
-        // newArtist.save();
-        //^alternitavely could have used the shorthand await Artist.create() for both
-    // })();
-    
-    
-    // console.log(newArtist.toJSON());
+        },{underscored: true});
+        return Featured;
     }
 }

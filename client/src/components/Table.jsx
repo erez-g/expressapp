@@ -52,7 +52,7 @@ export const Table = ({...props}) => {
     const getColumnName =(input)=> {
         switch(input) {
         case 'name':
-            return 'Song Name';
+            return 'Name';
         case 'artist_name':
             return 'Artist';
         case 'album_name':
