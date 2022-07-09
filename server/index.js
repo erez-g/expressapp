@@ -1,4 +1,5 @@
-// const path = require('path');
+const path = require('path');
+const fs = require('fs');
 const cors = require('cors');
 const express = require("express");
 const app = express();
@@ -8,12 +9,14 @@ const dataMigration = require('./db/migrations/dev.js');
 app.use(express.json());
 
 const db = require('./models/init.js');
-const devData = ['1_artists.csv','2_albums.csv','3_songs.csv'];
+
 db.sequelize.sync({force: true}).then(()=>{
   try {
-      for (const file of devData) {
+      const files = fs.readdirSync(path.join(__dirname, 'db/seeders'));
+      console.log(files)
+      for (const file of files) {
         dataMigration.getData('server/db/seeders/' + file);
-      };
+      }
   } catch (e) {
       console.log('error migrating data', e);
   }
@@ -40,3 +43,4 @@ app.listen(PORT, () => {
     console.log('whoopsies ', error);
   }
 });
+

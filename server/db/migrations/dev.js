@@ -37,6 +37,9 @@ function getData(file) {
             for await (const reqObj of arr) {
                 controllers.create(reqObj,resObj)
             }
+            //insert featured-s
+            
+
             resolve(arr);
         });
     })

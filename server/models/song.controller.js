@@ -46,14 +46,6 @@ exports.create = (req, res) => {
 
 // get all songs with condition
 exports.findAll = async (query) => {
-  console.log('***********************')
-  console.log('***********************')
-  console.log(query)
-  console.log('***********************')
-  console.log('***********************')
-    // const searchTerm = query.searchTerm;
-    // const limit = +(query.limit) || false;
-    // const offset = +(query.offset) || 0;
 
     const {searchTerm, limit, offset, sortField, sortDir} = query;
     

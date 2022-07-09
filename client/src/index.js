@@ -13,6 +13,7 @@ import * as ReactBootstrap from 'react-bootstrap';
 import * as bootstrap from 'bootstrap';
 import App from './App';
 import Create from './routes/Create.jsx';
+import Home from './routes/Home.jsx';
 import About from './routes/About.jsx';
 import reportWebVitals from './reportWebVitals';
 import Navbar from './components/Navbar';
@@ -31,9 +32,10 @@ ReactDOMClient.createRoot(container).render(
     <Navbar/>
     <div id="main">
     <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<Home />} />
           {/* <Route path="create" element={<Create />} /> */}
           <Route path="about" element={<About />} />
+          <Route path="admin" element={<App />} />
           <Route
             path="*"
             element={
